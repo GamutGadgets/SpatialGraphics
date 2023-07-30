@@ -89,7 +89,6 @@ struct SGRect: CustomStringConvertible {
         self.cornerPoints = SGRect.cornerPoints(origin: origin, size: size).sorted()
         if !self.cornerPoints.isEmpty {
             self.min = self.cornerPoints.first!
-
             if self.cornerPoints.count > 1 { self.max = self.cornerPoints.last! } 
             else { self.max = self.cornerPoints.first! }
         } else {
@@ -143,36 +142,73 @@ extension SGRect: AdditiveArithmetic {
         return SGRect(origin: lhs.origin, size: SGSize(width: sizeWidth, height: sizeHeight, depth: sizeDepth))
     }
 
-    static func == (lhs: SGRect, rhs: SGRect) -> Bool {
-        return lhs.size == rhs.size
-    }
-
     
 }
 
+extension SGRect: Comparable {
+
+    static func < (lhs: SGRect, rhs: SGRect) -> Bool {
+        return (lhs.size.magnitude < rhs.size.magnitude) && (lhs.center < rhs.center)
+    }
+
+    static func == (lhs: SGRect, rhs: SGRect) -> Bool {
+        return (lhs.size.magnitude == rhs.size.magnitude) && (lhs.center == rhs.center)
+    }
+}
+
 extension SGRect: SGScalable {
+
+    private mutating func updateFromSizeScale(scaledSize: SGSize) {
+        self.size = scaledSize
+        self.center = SGRect.center(origin: self.origin, size: scaledSize)
+        self.cornerPoints = SGRect.cornerPoints(origin: self.origin, size: scaledSize).sorted()
+        if !self.cornerPoints.isEmpty {
+            self.min = self.cornerPoints.first!
+            if self.cornerPoints.count > 1 { self.max = self.cornerPoints.last! } 
+            else { self.max = self.cornerPoints.first! }
+        } else {
+            self.min = .init(point: origin)
+            self.max = .init(point: origin)
+        }
+    }
+
     mutating func scale(by size: SGSize) {
-        self.size *= size
+        let scaledSize: SGSize = SGSize(width: self.size.width * size.width, height: self.size.height * size.height, depth: self.size.depth * size.depth)
+        self.updateFromSizeScale(scaledSize: scaledSize)
     }
 
     mutating func scaleBy(x: Double, y: Double, z: Double) {
-        self.size = SGSize(width: self.size.width * x, height: self.size.height * y, depth: self.size.depth * z)
+        let scaledSize: SGSize = SGSize(width: self.size.width * x, height: self.size.height * y, depth: self.size.depth * z)
+        self.updateFromSizeScale(scaledSize: scaledSize)
     }
 
     func scaled(by: SGSize) -> SGRect {
-        return SGRect()
+        let scaledSize: SGSize = SGSize(width: self.size.width * by.width, height: self.size.height * by.height, depth: self.size.depth * by.depth)
+        return SGRect(origin: self.origin, size: scaledSize)
     }
 
     func scaledBy(x: Double, y: Double, z: Double) -> SGRect {
-        return SGRect()
+        let scaledSize: SGSize = SGSize(width: self.size.width * x, height: self.size.height * y, depth: self.size.depth * z)
+        return SGRect(origin: self.origin, size: scaledSize)
     }
 
-    mutating func uniformlyScale(by: Double) {
-        self.size = SGSize(width: self.size.width * by, height: self.size.height * by, depth: self.size.depth * by)
+    mutating func uniformlyScale(by magnitude: Double) {
+        self.updateFromSizeScale(
+            scaledSize: SGSize(
+                width: self.size.width * magnitude,
+                height: self.size.height * magnitude,
+                depth: self.size.depth * magnitude
+            )
+        )
     }
 
-    func uniformlyScaled(by: Double) -> SGRect {
-        return SGRect()
+    func uniformlyScaled(by magnitude: Double) -> SGRect {
+        let scaledSize: SGSize = SGSize(
+                width: self.size.width * magnitude,
+                height: self.size.height * magnitude,
+                depth: self.size.depth * magnitude
+            )
+        return SGRect(origin: self.origin, size: scaledSize)
     }
 
 

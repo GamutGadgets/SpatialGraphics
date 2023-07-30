@@ -56,3 +56,49 @@ struct SGVector: CustomStringConvertible {
         return value
     }
 }
+
+extension SGVector: AdditiveArithmetic {
+
+    static func + (lhs: SGVector, rhs: SGVector) -> SGVector {
+        return SGVector(x: lhs.x + rhs.x, y: lhs.y + rhs.y, z: lhs.z + rhs.z)
+    }
+
+    static func - (lhs: SGVector, rhs: SGVector) -> SGVector {
+        return SGVector(x: lhs.x - rhs.x, y: lhs.y - rhs.y, z: lhs.z - rhs.z)
+        
+    }
+
+}
+
+extension SGVector: SGScalable {
+    mutating func scale(by size: SGSize) {
+        self.x *= size.width
+        self.y *= size.height
+        self.z *= size.depth
+    }
+
+    mutating func scaleBy(x: Double, y: Double, z: Double) {
+        self.x *= x
+        self.y *= y
+        self.z *= z
+    }
+
+    func scaled(by: SGSize) -> SGVector {
+        return SGVector(x: self.x * by.width, y: self.y * by.width, z: self.z * by.depth)
+    }
+
+    func scaledBy(x: Double, y: Double, z: Double) -> SGVector {
+        return SGVector(x: self.x * x, y: self.y * y, z: self.z * z)
+    }
+
+    mutating func uniformlyScale(by magnitude: Double) {
+        self.x *= magnitude
+        self.y *= magnitude
+        self.z *= magnitude
+    }
+
+    func uniformlyScaled(by magnitude: Double) -> SGVector {
+        return SGVector(x: self.x * magnitude, y: self.y * magnitude, z: self.z * magnitude)
+    }
+    
+}

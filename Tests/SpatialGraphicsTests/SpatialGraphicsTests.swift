@@ -8,6 +8,18 @@ final class SpatialGraphicsTests: XCTestCase {
         let vector: SGVector = .zero
         print(vector)
         print("\nend testSGVector\n")
+        let V1: SGVector = SGVector()
+        let V2: SGVector = SGVector(x: 10.0, y: 10.0, z: 10.0)
+        print("V1:\n\(V1)\n")
+        print("V2:\n\(V2)\n")
+        let sumOfV1andV2: SGVector = V1 + V2
+        print("sumOfV1andV2:\n\(sumOfV1andV2)\n")
+        let V3: SGVector = SGVector(x: 5.0, y: -10.0, z: 20.0)
+        print("V3:\n\(V3)\n")
+        let diffOfV2andV3: SGVector = V2 - V3
+        print("diffOfV2andV3:\n\(diffOfV2andV3)\n")
+        let scaledDiffOfV2andV3: SGVector = diffOfV2andV3.uniformlyScaled(by: Double.pi)
+        print("scaledDiffOfV2andV3:\n\(scaledDiffOfV2andV3)\n")
     }
 
     func testSGAxis() throws {
@@ -55,5 +67,14 @@ final class SpatialGraphicsTests: XCTestCase {
         let rect2: SGRect = SGRect(origin: SGPoint(x: 1.57, y: 7.21, z: 2.5), size: SGSize(width: 1.5, height: 5.2, depth: 3.2))
         print(rect2)
         print("\nend testSGRect\n")
+    }
+
+    func testSGVectorAddition() throws {
+        let V1: SGVector = SGVector()
+        let V2: SGVector = SGVector(x: 10.0, y: 10.0, z: 10.0)
+        print("V1:\n\(V1)\n")
+        print("V2:\n\(V2)\n")
+        let sumOfV1andV2: SGVector = V1 + V2
+        print("sumOfV1andV2:\n\(sumOfV1andV2)\n")
     }
 }
