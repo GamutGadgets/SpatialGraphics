@@ -48,8 +48,12 @@ final class SpatialGraphicsTests: XCTestCase {
     }
 
     func testSGRect() throws {
-        print("\nstart testSGPoint\n")
+        print("\nstart testSGRect\n")
         let rect: SGRect = SGRect()
         print(rect)
+
+        let rect2: SGRect = SGRect(origin: SGPoint(x: 1.57, y: 7.21, z: 2.5), size: SGSize(width: 1.5, height: 5.2, depth: 3.2))
+        print(rect2)
+        print("\nend testSGRect\n")
     }
 }

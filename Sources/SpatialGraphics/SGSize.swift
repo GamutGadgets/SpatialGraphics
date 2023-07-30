@@ -45,3 +45,34 @@ struct SGSize: CustomStringConvertible {
         return "SGSize<width: \(self.width), height: \(self.height), depth: \(self.depth)>"
     }
 }
+
+extension SGSize: Comparable {
+
+    var scalarSize: Double {
+        let w: Double = self.width * self.width
+        let h: Double = self.height * self.height
+        let d: Double = self.depth * self.depth
+        return (w + h + d).squareRoot()
+        // return (self.wi + y*y + z*z).squareRoot()
+    }
+
+    static func < (lhs: SGSize, rhs: SGSize) -> Bool {
+        return lhs.scalarSize < rhs.scalarSize
+    }
+
+    static func == (lhs: SGSize, rhs: SGSize) -> Bool {
+        return lhs.scalarSize == rhs.scalarSize
+    }
+}
+
+extension SGSize {
+    /**
+        Creates a point from the specified arithmetic operation of two points.
+    */
+    static func *= (lhs: inout SGSize, rhs: SGSize) -> SGSize {
+        lhs.width = lhs.width * rhs.width
+        lhs.height = lhs.height * rhs.height
+        lhs.depth = lhs.depth * rhs.depth
+        return lhs
+    }
+}

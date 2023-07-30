@@ -3,7 +3,7 @@
 
 import Foundation
 
-struct SGPoint: CustomStringConvertible, AdditiveArithmetic {
+struct SGPoint: CustomStringConvertible, AdditiveArithmetic, Comparable {
     var x: Double
     var y: Double
     var z: Double
@@ -44,6 +44,12 @@ struct SGPoint: CustomStringConvertible, AdditiveArithmetic {
         self.z = vector.z
     }
 
+    init(point: SGPoint) {
+        self.x = point.x
+        self.y = point.y
+        self.z = point.z
+    }
+
     static var zero: SGPoint {
         return SGPoint()
     }
@@ -60,13 +66,24 @@ struct SGPoint: CustomStringConvertible, AdditiveArithmetic {
     }
 
     /**
-        Creates a new instance with the specified raw value.
+        Creates a point from the specified arithmetic operation of two points.
     */
     static func + (lhs: SGPoint, rhs: SGPoint) -> SGPoint {
         return SGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y, z: lhs.z + rhs.z)
     }
 
+    /**
+        The distance between two points.
+    */
+    static func distanceBetween(lhs: SGPoint, rhs: SGPoint) -> Double {
+        return ((rhs.x - lhs.x)*(rhs.x - lhs.x) + (rhs.y - lhs.y)*(rhs.y - lhs.y) + (rhs.z - lhs.z)*(rhs.z - lhs.z)).squareRoot()
+    }
+    
+    static func < (lhs: SGPoint, rhs: SGPoint) -> Bool {
+        return distanceBetween(lhs: lhs, rhs: rhs) < 0
+    }
+
     static func == (lhs: SGPoint, rhs: SGPoint) -> Bool {
-        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
+        return distanceBetween(lhs: lhs, rhs: rhs) == 0
     }
 }
