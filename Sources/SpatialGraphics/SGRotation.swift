@@ -1,9 +1,9 @@
 import Foundation
 
-struct SGRotation: CustomStringConvertible {
+public struct SGRotation: CustomStringConvertible {
 
 
-    var description: String {
+    public var description: String {
         return "SGRotation"
     }
 }
