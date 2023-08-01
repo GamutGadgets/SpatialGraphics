@@ -1,7 +1,22 @@
 import XCTest
 @testable import SpatialGraphics
-
 final class SpatialGraphicsTests: XCTestCase {
+
+    // func testPhysics() throws {
+    //     var simulation: SGPhysics = SGPhysics(dt: 0.0166666666666667)
+    //     let startingPosition: SGPoint = SGPoint(x: 0.0, y: 0.0, z: 8.0)
+    //     let objectA: SGObject = SGObject(at: startingPosition)
+    //     let objectB: SGObject = SGObject(isAffectedByGravity: false)
+    //     simulation.add(objectA)
+    //     simulation.add(objectB)
+        
+    //     let duration: Double = 1.0
+
+    //     while simulation.time <= duration {
+    //         // objectA.move(by: SGVector(x: 0.0, y: 0.0, z: simulation.dg.z * -1))
+    //         simulation.update()
+    //     }
+    // }
 
     func testSGVector() throws {
         print("\nstart testSGVector\n")
